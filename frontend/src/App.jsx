@@ -3,14 +3,12 @@ import axios from 'axios';
 import './App.css';
 import DownloadForm from './components/DownloadForm';
 import DownloadList from './components/DownloadList';
-import FolderManager from './components/FolderManager';
 
 const API_BASE = 'http://192.168.1.10:5000/api'; // Replace with your server IP
 const WS_URL = 'ws://192.168.1.10:5001'; // Replace with your server IP
 
 function App() {
   const [downloads, setDownloads] = useState([]);
-  const [folders, setFolders] = useState([]);
   const [currentFolder, setCurrentFolder] = useState('');
   const [ws, setWs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,11 +77,6 @@ function App() {
     return () => websocket.close();
   }, []);
 
-  // Fetch folders
-  useEffect(() => {
-    fetchFolders(currentFolder);
-  }, [currentFolder]);
-
   // Fetch initial downloads and restore from storage
   useEffect(() => {
     const loadDownloads = async () => {
@@ -113,17 +106,6 @@ function App() {
     
     loadDownloads();
   }, []);
-
-  const fetchFolders = async (path = '') => {
-    try {
-      const response = await axios.get(`${API_BASE}/folders`, {
-        params: { path }
-      });
-      setFolders(response.data.folders);
-    } catch (error) {
-      console.error('Error fetching folders:', error);
-    }
-  };
 
   const fetchDownloads = async () => {
     try {
@@ -188,27 +170,18 @@ function App() {
       </header>
       
       <div className="container">
-        <div className="left-panel">
-          <FolderManager
-            folders={folders}
-            currentFolder={currentFolder}
-            onFolderChange={setCurrentFolder}
-            onCreateFolder={createFolder}
-          />
-        </div>
+        <DownloadForm
+          onSubmit={startDownload}
+          currentFolder={currentFolder}
+          onFolderChange={setCurrentFolder}
+          onCreateFolder={createFolder}
+        />
         
-        <div className="right-panel">
-          <DownloadForm
-            onSubmit={startDownload}
-            currentFolder={currentFolder}
-          />
-          
-          <DownloadList
-            downloads={downloads}
-            onCancel={cancelDownload}
-            isLoading={isLoading}
-          />
-        </div>
+        <DownloadList
+          downloads={downloads}
+          onCancel={cancelDownload}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

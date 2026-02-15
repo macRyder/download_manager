@@ -33,18 +33,11 @@ body {
 
 .container {
   display: flex;
-  max-width: 1400px;
+  flex-direction: column;
+  max-width: 1000px;
   margin: 2rem auto;
   gap: 2rem;
   padding: 0 2rem;
-}
-
-.left-panel {
-  flex: 0 0 300px;
-}
-
-.right-panel {
-  flex: 1;
 }
 
 /* Folder Manager */
@@ -68,39 +61,17 @@ body {
   border-radius: 4px;
   margin-bottom: 1rem;
   font-size: 0.9rem;
-  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
-.folder-list {
-  margin: 1rem 0;
-  max-height: 400px;
-  overflow-y: auto;
+.btn-file-manager {
+  display: none;
 }
 
-.folder-item {
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  background: #f9f9f9;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.folder-item:hover {
-  background: #e3f2fd;
-  transform: translateX(5px);
-}
-
-.create-folder-form {
-  margin-top: 1rem;
-}
-
-.create-folder-form input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+.download-folder-display {
+  display: none;
 }
 
 /* Download Form */
@@ -148,6 +119,59 @@ body {
   font-size: 0.85rem;
 }
 
+.save-to-section {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.save-to-section:hover {
+  border-color: #667eea;
+  background: #f0f8ff;
+}
+
+.current-folder-path {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.folder-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.folder-path {
+  color: #555;
+  font-weight: 500;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.btn-change-folder {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
 /* Download List */
 .download-list {
   background: white;
@@ -190,19 +214,27 @@ body {
   padding: 1.5rem;
   margin-bottom: 1rem;
   border-left: 4px solid #667eea;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .download-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .download-filename {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .download-method {
@@ -212,6 +244,7 @@ body {
   font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .download-status {
@@ -225,10 +258,11 @@ body {
   color: #666;
   margin-bottom: 0.5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   overflow: hidden;
   cursor: help;
+  flex-wrap: wrap;
 }
 
 .url-icon {
@@ -237,10 +271,10 @@ body {
 }
 
 .url-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: break-word;
+  word-break: break-all;
   flex: 1;
+  min-width: 0;
   transition: color 0.2s;
 }
 
@@ -276,6 +310,9 @@ body {
   font-size: 0.85rem;
   color: #666;
   margin-bottom: 1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .progress-bar {
@@ -373,11 +410,8 @@ body {
     flex-direction: column;
   }
   
-  .left-panel {
-    flex: 1;
-  }
-  
-  .folder-manager {
-    position: static;
+  .download-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
