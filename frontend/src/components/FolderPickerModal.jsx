@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../styles/FolderPickerModal.css';
-
-const API_BASE = 'http://192.168.1.10:5000/api';
+import { folderApi } from '../services/api';
 
 function FolderPickerModal({ isOpen, onClose, onSelectFolder, currentFolder, onCreateFolder }) {
   const [items, setItems] = useState([]);
@@ -23,10 +21,8 @@ function FolderPickerModal({ isOpen, onClose, onSelectFolder, currentFolder, onC
   const loadContents = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE}/folders/list`, {
-        params: { path: currentFolder }
-      });
-      setItems(response.data.items);
+      const data = await folderApi.list(currentFolder);
+      setItems(data.items);
     } catch (error) {
       console.error('Error loading contents:', error);
     } finally {
@@ -65,9 +61,7 @@ function FolderPickerModal({ isOpen, onClose, onSelectFolder, currentFolder, onC
     }
 
     try {
-      await axios.delete(`${API_BASE}/folders/item`, {
-        data: { itemPath }
-      });
+      await folderApi.deleteItem(itemPath);
       loadContents();
     } catch (error) {
       alert('Error deleting item: ' + (error.response?.data?.error || error.message));
@@ -86,10 +80,7 @@ function FolderPickerModal({ isOpen, onClose, onSelectFolder, currentFolder, onC
     }
 
     try {
-      await axios.post(`${API_BASE}/folders/rename`, {
-        itemPath: renaming,
-        newName: newName
-      });
+      await folderApi.rename(renaming, newName);
       setRenaming(null);
       loadContents();
     } catch (error) {
@@ -106,10 +97,7 @@ function FolderPickerModal({ isOpen, onClose, onSelectFolder, currentFolder, onC
     if (!selectedForMove) return;
 
     try {
-      await axios.post(`${API_BASE}/folders/move`, {
-        sourcePath: selectedForMove.path,
-        destinationPath: destinationPath || ''
-      });
+      await folderApi.move(selectedForMove.path, destinationPath || '');
       setSelectedForMove(null);
       setMoveMode(false);
       loadContents();

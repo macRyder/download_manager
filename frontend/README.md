@@ -84,8 +84,8 @@ frontend/
    - `src/components/FolderPickerModal.jsx`
    
    ```javascript
-   const API_BASE = 'http://192.168.1.10:5000/api';
-   const WS_URL = 'ws://192.168.1.10:5001';
+   const API_BASE = 'http://192.168.1.9:5000/api';
+   const WS_URL = 'ws://192.168.1.9:5001';
    ```
 
 ## Development
@@ -300,8 +300,8 @@ npm run lint     # Run ESLint
 
 Create `.env` file in frontend directory:
 ```
-VITE_API_BASE=http://192.168.1.10:5000/api
-VITE_WS_URL=ws://192.168.1.10:5001
+VITE_API_BASE=http://192.168.1.9:5000/api
+VITE_WS_URL=ws://192.168.1.9:5001
 ```
 
 Then import in components:

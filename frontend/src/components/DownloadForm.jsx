@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import FolderPickerModal from './FolderPickerModal';
 
-const API_BASE = 'http://192.168.1.10:5000/api';
-
-function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder }) {
+function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder, isModalOpen, onModalOpen }) {
   const [url, setUrl] = useState('');
   const [name, setName] = useState('');
   const [connections, setConnections] = useState(4);
-  const [isFolderPickerOpen, setIsFolderPickerOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +17,7 @@ function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder 
 
   return (
     <>
-      <div className="download-form">
+      <div className="download-form" data-disabled={isModalOpen}>
         <h2>Add Download</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -32,6 +28,7 @@ function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder 
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com/file.zip"
               required
+              disabled={isModalOpen}
             />
           </div>
           
@@ -42,6 +39,7 @@ function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder 
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., My Important File"
+              disabled={isModalOpen}
             />
             <small>Leave empty to use filename from URL</small>
           </div>
@@ -54,6 +52,7 @@ function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder 
               onChange={(e) => setConnections(parseInt(e.target.value))}
               min="1"
               max="32"
+              disabled={isModalOpen}
             />
             <small>More connections = faster download (if supported by server)</small>
           </div>
@@ -68,22 +67,23 @@ function DownloadForm({ onSubmit, currentFolder, onFolderChange, onCreateFolder 
               <button 
                 type="button"
                 className="btn-secondary btn-change-folder"
-                onClick={() => setIsFolderPickerOpen(true)}
+                onClick={() => onModalOpen(true)}
+                disabled={isModalOpen}
               >
                 Browse...
               </button>
             </div>
           </div>
           
-          <button type="submit" className="btn-primary btn-submit">
+          <button type="submit" className="btn-primary btn-submit" disabled={isModalOpen}>
             Start Download
           </button>
         </form>
       </div>
 
       <FolderPickerModal
-        isOpen={isFolderPickerOpen}
-        onClose={() => setIsFolderPickerOpen(false)}
+        isOpen={isModalOpen}
+        onClose={() => onModalOpen(false)}
         onSelectFolder={onFolderChange}
         currentFolder={currentFolder}
         onCreateFolder={onCreateFolder}

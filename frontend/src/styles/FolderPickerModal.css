@@ -69,7 +69,9 @@
   display: flex;
   gap: 0;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  min-height: 40px;
 }
 
 .breadcrumb-btn {
@@ -139,7 +141,7 @@
 
 .item-card {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   padding: 0.75rem;
   background: #f9f9f9;
@@ -148,7 +150,8 @@
   cursor: pointer;
   transition: all 0.2s;
   gap: 0.75rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-height: 50px;
 }
 
 .item-card:hover {
@@ -203,14 +206,18 @@
   flex: 1;
   min-width: 200px;
   align-items: center;
+  justify-content: flex-start;
+  height: 100%;
 }
 
 .rename-input input {
   flex: 1;
+  min-width: 150px;
   padding: 0.5rem;
   border: 2px solid #667eea;
   border-radius: 4px;
   font-size: 0.9rem;
+  max-height: 100%;
 }
 
 .rename-input input:focus {
@@ -227,18 +234,41 @@
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  min-height: 32px;
 }
 
 .btn-confirm:hover {
   background: #45a049;
 }
 
+.rename-input .btn-cancel {
+  padding: 0.5rem 0.75rem;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  min-height: 32px;
+}
+
+.rename-input .btn-cancel:hover {
+  background: #da190b;
+}
+
 .item-actions {
   display: flex;
   gap: 0.25rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-shrink: 0;
   justify-content: flex-end;
+  align-items: center;
+  height: 100%;
 }
 
 .btn-action {

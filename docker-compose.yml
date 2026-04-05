@@ -1,0 +1,42 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: dm_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  backend:
+    build:
+      context: ./backend
+    container_name: dm_backend
+    restart: unless-stopped
+    depends_on:
+      - redis
+    ports:
+      - "5000:5000"
+    volumes:
+      - /home/hp_server/media:/home/hp_server/media       # download target
+      - backend_data:/app/data                             # SQLite DB
+      - backend_logs:/app/logs                             # log files
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE: /api
+    container_name: dm_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  redis_data:
+  backend_data:
+  backend_logs:

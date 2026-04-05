@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE = 'http://192.168.1.10:5000/api';
+const API_BASE = 'http://192.168.1.9:5000/api';
 
 function FileBrowser({ currentFolder }) {
   const [items, setItems] = useState([]);
